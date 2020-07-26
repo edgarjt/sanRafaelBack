@@ -83,7 +83,7 @@ class CaballoController extends Controller
 
             if (isset($delete)) {
                 $delete->delete();
-                return response()->json(['response' => treu], 200);
+                return response()->json(['response' => true], 200);
             }
 
             return response()->json(['response' => false], 401);

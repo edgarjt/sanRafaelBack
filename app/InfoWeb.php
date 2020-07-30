@@ -11,6 +11,6 @@ class InfoWeb extends Model
     protected $primaryKey = 'inf_id';
 
     protected $fillable = [
-        'inf_logo', 'inf_telefono', 'inf_email', 'fk_id_user'
+        'inf_logo', 'inf_telefono', 'inf_email', 'inf_historia', 'fk_id_user'
     ];
 }

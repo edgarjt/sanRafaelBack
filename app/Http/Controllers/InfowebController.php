@@ -22,6 +22,7 @@ class InfowebController extends Controller
                 'inf_logo' => 'required',
                 'inf_telefono' => 'required',
                 'inf_email' => 'required',
+                'inf_historia' => 'required',
                 'fk_id_user' => 'required'
             ]);
 

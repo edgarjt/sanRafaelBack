@@ -18,6 +18,7 @@ class CreateInfoWebTable extends Migration
             $table->string('inf_logo');
             $table->string('inf_telefono');
             $table->string('inf_email');
+            $table->string('inf_historia');
             $table->integer('fk_id_user')->unsigned();
             $table->foreign('fk_id_user')->references('use_id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();

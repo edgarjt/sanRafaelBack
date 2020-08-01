@@ -24,10 +24,6 @@ class CaballoController extends Controller
                 'cab_capa' => 'required',
                 'cab_nacimiento' => 'required',
                 'cab_semental' => 'required',
-                'cab_fot1' => 'required',
-                'cab_fot2' => 'required',
-                'cab_fot3' => 'required',
-                'cab_video' => 'required',
                 'fk_id_user' => 'required',
                 'fk_id_finca' => 'required'
             ]);
@@ -42,7 +38,7 @@ class CaballoController extends Controller
                 Storage::disk('fotos_caballos')->put($name1,File::get($fot1));
                 $url_img1 = 'http://'.$_SERVER['SERVER_NAME'].'/yeguadaSanRafaelBack/storage/app/public/fotos_caballos/'.$name1;
             } else {
-                $url_img1 = 'http://google.com';
+                $url_img1 = $request['cab_fot1'];
             }
 
             if ($fot2) {
@@ -50,7 +46,7 @@ class CaballoController extends Controller
                 Storage::disk('fotos_caballos')->put($name2,File::get($fot2));
                 $url_img2 = 'http://'.$_SERVER['SERVER_NAME'].'/yeguadaSanRafaelBack/storage/app/public/fotos_caballos/'.$name2;
             } else {
-                $url_img2 = 'http://google.com';
+                $url_img2 = $request['cab_fot2'];
             }
 
             if ($fot3) {
@@ -58,7 +54,7 @@ class CaballoController extends Controller
                 Storage::disk('fotos_caballos')->put($name3,File::get($fot3));
                 $url_img3 = 'http://'.$_SERVER['SERVER_NAME'].'/yeguadaSanRafaelBack/storage/app/public/fotos_caballos/'.$name3;
             } else {
-                $url_img3 = 'http://google.com';
+                $url_img3 = $request['cab_fot3'];
             }
 
         if ($cab_video) {
@@ -66,7 +62,7 @@ class CaballoController extends Controller
             Storage::disk('video_caballos')->put($nameVideo,File::get($cab_video));
             $url_video = 'http://'.$_SERVER['SERVER_NAME'].'/yeguadaSanRafaelBack/storage/app/public/video_caballos/'.$nameVideo;
         } else {
-            $url_video = 'http://google.com';
+            $url_video = $request['cab_video'];
         }
 
             $response = Caballo::create([
@@ -93,10 +89,6 @@ class CaballoController extends Controller
             'cab_capa' => 'required',
             'cab_nacimiento' => 'required',
             'cab_semental' => 'required',
-            'cab_fot1' => 'required',
-            'cab_fot2' => 'required',
-            'cab_fot3' => 'required',
-            'cab_video' => 'required',
             'fk_id_user' => 'required',
             'fk_id_finca' => 'required'
         ]);

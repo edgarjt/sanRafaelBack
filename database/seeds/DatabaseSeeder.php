@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
         //$this->call(CaballoSeeder::class);
         $this->call(FincaSeeder::class);
         $this->call(InfoWebSeeder::class);
-        //$this->call(SliderSeeder::class);
+        $this->call(SliderSeeder::class);
         //$this->call(YeguaSeeder::class);
     }
 }

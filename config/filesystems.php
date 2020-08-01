@@ -62,9 +62,23 @@ return [
             'visibility' => 'public',
         ],
 
+        'fotos_yeguas' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/fotos_yeguas'),
+            'url' => env('APP_URL').'/storage',
+            'visibility' => 'public',
+        ],
+
         'video_caballos' => [
             'driver' => 'local',
             'root' => storage_path('app/public/video_caballos'),
+            'url' => env('APP_URL').'/storage',
+            'visibility' => 'public',
+        ],
+
+        'video_yeguas' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/video_yeguas'),
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
         ],

@@ -12,7 +12,7 @@ class InfowebController extends Controller
     public function getInfos(Request $request)
     {
         if ($request->isJson()) {
-            return InfoWeb::all();
+            return InfoWeb::all()->first();
         }
 
         return response()->json(['response' => false], 401);

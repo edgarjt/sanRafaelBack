@@ -13,9 +13,7 @@ class FincaSeeder extends Seeder
     public function run()
     {
         $data = [
-            ['fin_nombre' => 'San Rafael', 'fin_direccion' => 'Villahermosa', 'fin_horario' => '6:00 am - 5:00 pm'],
-            ['fin_nombre' => 'Santa Elena', 'fin_direccion' => 'Jonuta', 'fin_horario' => '6:00 am - 5:00 pm'],
-            ['fin_nombre' => 'La soledad', 'fin_direccion' => 'Palizada', 'fin_horario' => '6:00 am - 5:00 pm'],
+            ['fin_nombre' => 'San Rafael', 'fin_direccion' => 'Villahermosa', 'fin_horario' => '6:00 am - 5:00 pm']
         ];
 
         //No verfica las llaves foraneas

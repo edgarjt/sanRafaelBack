@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Slider;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class SliderController extends Controller
 {
@@ -16,22 +18,37 @@ class SliderController extends Controller
     }
 
     public function updateslider(Request $request) {
-        if ($request->isJson()) {
-            $this->validate($request, [
-                'sli_id' => 'required'
-            ]);
+        $request->validate([
+            'sli_id' => 'required',
+            'sli_nombre' => 'required',
+            'fk_id_user' => 'required',
+        ]);
 
-            $data = $request->json()->all();
+        $slid = $request->file('sli_link');
+        $update = Slider::where('sli_id', $request['sli_id'])->first();
 
-            $update = Slider::where('sli_id', $data['sli_id'])->update($data);
+            if ($slid) {
+                $name = str_replace(' ', '_', time().$slid->getClientOriginalName());
+                Storage::disk('slid')->put($name,File::get($slid));
+                $url_img = 'http://'.$_SERVER['SERVER_NAME'].'/yeguadaSanRafaelBack/storage/app/public/slid/'.$name;
 
-            if ($update == 1) {
-                return Slider::where('sli_id', $data['sli_id'])->first();
+                $foto = $update->sli_link;
+                $name_foto = substr($foto, 73);
+                Storage::disk('slid')->delete($name_foto);
+            }else {
+                $url_img = $request['sli_link'];
             }
 
-            return response()->json(['response' => false], 401);
-        }
+        $data = [
+            'sli_nombre' => $request['sli_nombre'],
+            'sli_link' => $url_img,
+            'fk_id_user' => $request['sli_id']
+        ];
 
-        return response()->json(['response' => false], 401);
+        $update->update($data);
+
+        if ($update) {
+            return $update;
+        }
     }
 }

@@ -50,7 +50,7 @@ class InfowebController extends Controller
             'inf_telefono' => $request['inf_telefono'],
             'inf_email' => $request['inf_email'],
             'inf_historia' => $request['inf_historia'],
-            'fk_id_user' => 1,
+            'fk_id_user' => $request['inf_id'],
         ];
 
         $update->update($data);

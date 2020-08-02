@@ -49,3 +49,7 @@ Route::post('updateInfo', 'InfowebController@updateInfo');
 //Sliders
 Route::get('getSliders', 'SliderController@getSliders');
 Route::post('updateSlider', 'SliderController@updateSlider');
+
+//Reports
+Route::get('reportPdf', 'UsersController@reportPdf')->name('reportPdf');
+Route::get('reportYeguas', 'UsersController@reportYeguas')->name('reportYeguas');

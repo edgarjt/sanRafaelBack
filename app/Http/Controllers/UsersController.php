@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 
@@ -114,6 +116,26 @@ class UsersController extends Controller
         }
 
         return response()->json(['response' => false], 401);
+    }
+
+    public function reportPdf() {
+        $response = DB::table('caballo')
+        ->join('users', 'caballo.fk_id_user', 'users.use_id')
+        ->select('caballo.*', 'users.use_nombre', 'users.use_app', 'users.use_apm', 'users.use_email', 'users.use_telefono')
+        ->get();
+        $pdf = PDF::loadView('reportsOne', compact('response'));
+
+        return $pdf->download('ReportsCaballos.pdf');
+    }
+
+    public function reportYeguas() {
+        $response = DB::table('yegua')
+            ->join('users', 'yegua.fk_id_user', 'users.use_id')
+            ->select('yegua.*', 'users.use_nombre', 'users.use_app', 'users.use_apm', 'users.use_email', 'users.use_telefono')
+            ->get();
+        $pdf = PDF::loadView('reportsTwo', compact('response'));
+
+        return $pdf->download('ReportsYeguas.pdf');
     }
 
 

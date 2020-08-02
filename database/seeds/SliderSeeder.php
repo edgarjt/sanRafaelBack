@@ -13,7 +13,7 @@ class SliderSeeder extends Seeder
     public function run()
     {
         $data = [
-            ['sli_nombre' => 'slide1', 'sli_link' => 'http://yeguadasanrafael.com/dist/assets/video/slider_presentacion.mp4', 'fk_id_user' => 1]
+            ['sli_nombre' => 'slide1', 'sli_link' => 'http://yeguadasanrafael.net/yeguadaSanRafaelBack/storage/app/public/slid/slider.mp4', 'fk_id_user' => 1]
         ];
 
         //No verfica las llaves foraneas

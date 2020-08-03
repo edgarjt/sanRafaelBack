@@ -23,6 +23,7 @@ Route::get('getUsers', 'UsersController@getUsers')->name('getUsers');
 Route::post('addUser', 'UsersController@addUser')->name('addUser');
 Route::post('updateUser', 'UsersController@updateUser')->name('updateUser');
 Route::post('deleteUser', 'UsersController@deleteUser')->name('deleteUser');
+Route::post('passwordResset', 'UsersController@passwordResset')->name('passwordResset');
 
 //Caballos
 Route::get('getCaballos', 'CaballoController@getCaballos');

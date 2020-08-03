@@ -23,7 +23,7 @@ class UsersController extends Controller
                 return response()->json(['response' => $user], 200);
 
             }else{
-                return response()->json(['response' => 'password'], 401);
+                return response()->json(['response' => 'password']);
 
             }
         }

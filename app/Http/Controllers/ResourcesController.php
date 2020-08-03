@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 class ResourcesController extends Controller
 {
     public function contacto(Request $request) {
+        //validar json
         if ($request->isJson()) {
             ini_set( 'display_errors', 1 );
             error_reporting( E_ALL );

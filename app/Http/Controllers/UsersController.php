@@ -148,7 +148,7 @@ class UsersController extends Controller
                     $data->update(['use_password' => Hash::make($request->new_password)]);
                     return response()->json(['password' => true], 200);
                 }
-                return response()->json(['password' => false], 401);
+                return response()->json(['password' => false], 200);
             }
 
             return response()->json(['response' => false], 401);

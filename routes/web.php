@@ -56,4 +56,4 @@ Route::get('reportPdf', 'UsersController@reportPdf')->name('reportPdf');
 Route::get('reportYeguas', 'UsersController@reportYeguas')->name('reportYeguas');
 
 //Resources
-Route::get('contacto', 'ResourcesController@contacto');
+Route::post('contacto', 'ResourcesController@contacto');

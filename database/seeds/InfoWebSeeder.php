@@ -13,7 +13,7 @@ class InfoWebSeeder extends Seeder
     public function run()
     {
         $data = [
-            ['inf_logo' => 'http://yeguadasanrafael.net/yeguadaSanRafaelBack/storage/app/public/logo/logo.png', 'inf_telefono' => 9988776655, 'inf_email' => 'sanrafael@email.com', 'inf_historia' => 'Esta es una historia inicial', 'fk_id_user' => 1]
+            ['inf_logo' => 'http://yeguadasanrafael.com/yeguadaSanRafaelBack/storage/app/public/logo/logo.png', 'inf_telefono' => 9988776655, 'inf_email' => 'sanrafael@email.com', 'inf_historia' => 'Esta es una historia inicial', 'fk_id_user' => 1]
         ];
 
         //No verfica las llaves foraneas

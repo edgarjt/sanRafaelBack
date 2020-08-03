@@ -54,3 +54,6 @@ Route::post('updateSlider', 'SliderController@updateSlider');
 //Reports
 Route::get('reportPdf', 'UsersController@reportPdf')->name('reportPdf');
 Route::get('reportYeguas', 'UsersController@reportYeguas')->name('reportYeguas');
+
+//Resources
+Route::get('contacto', 'ResourcesController@contacto');

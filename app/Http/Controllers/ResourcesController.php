@@ -14,7 +14,8 @@ class ResourcesController extends Controller
             $from = $request->email;
             $to = "edgarjt97@gmail.com";
             $subject = "Mensaje de contacto Yeguada San Rafael";
-            $message = $request->message;
+            $message = "Nombre: $request->name \n";
+            $message .= "Mensaje: $request->message";
             $headers = "From:" . $from;
             mail($to,$subject,$message, $headers);
 

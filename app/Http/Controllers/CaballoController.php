@@ -17,6 +17,28 @@ class CaballoController extends Controller
         return response()->json(['response' => false], 401);
     }
 
+    public function whereCaballo(Request $request) {
+        if ($request->isJson()) {
+            $response = Caballo::where('cab_id', $request->cab_id)->first();
+
+            if (isset($response)) {
+                return $response;
+            }
+        }
+        return response()->json(['response' => false], 401);
+    }
+
+    public function ultimateCaballos(Request $request) {
+        if ($request->isJson()) {
+            $response = Caballo::latest()->take(3)->get();
+
+            if (isset($response)) {
+                return $response;
+            }
+        }
+        return response()->json(['response' => false], 401);
+    }
+
     public function addCaballo(Request $request) {
 
             $this->validate($request, [

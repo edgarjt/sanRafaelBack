@@ -27,12 +27,16 @@ Route::post('passwordResset', 'UsersController@passwordResset')->name('passwordR
 
 //Caballos
 Route::get('getCaballos', 'CaballoController@getCaballos');
+Route::get('ultimateCaballos', 'CaballoController@ultimateCaballos');
+Route::post('whereCaballo', 'CaballoController@whereCaballo');
 Route::post('addCaballo', 'CaballoController@addCaballo');
 Route::post('updateCaballo', 'CaballoController@updateCaballo');
 Route::post('deleteCaballo', 'CaballoController@deleteCaballo');
 
 //Yeguas
 Route::get('getYeguas', 'YeguaController@getYeguas');
+Route::get('ultimateYeguas', 'YeguaController@ultimateYeguas');
+Route::post('whereYegua', 'YeguaController@whereYegua');
 Route::post('addYegua', 'YeguaController@addYegua');
 Route::post('updateYegua', 'YeguaController@updateYegua');
 Route::post('deleteYegua', 'YeguaController@deleteYegua');

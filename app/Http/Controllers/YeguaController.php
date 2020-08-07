@@ -17,6 +17,28 @@ class YeguaController extends Controller
         return response()->json(['response' => false], 401);
     }
 
+    public function whereYegua(Request $request) {
+        if ($request->isJson()) {
+            $response = Yegua::where('yeg_id', $request->yeg_id)->first();
+
+            if (isset($response)) {
+                return $response;
+            }
+        }
+        return response()->json(['response' => false], 401);
+    }
+
+    public function ultimateYeguas(Request $request) {
+        if ($request->isJson()) {
+            $response = Yegua::latest()->take(3)->get();
+
+            if (isset($response)) {
+                return $response;
+            }
+        }
+        return response()->json(['response' => false], 401);
+    }
+
     public function addYegua(Request $request) {
             $this->validate($request, [
                 'yeg_nombre' => 'required',

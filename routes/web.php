@@ -59,5 +59,10 @@ Route::post('updateSlider', 'SliderController@updateSlider');
 Route::get('reportPdf', 'UsersController@reportPdf')->name('reportPdf');
 Route::get('reportYeguas', 'UsersController@reportYeguas')->name('reportYeguas');
 
+//Trofeos
+Route::get('getTrofeosCaballos', 'TrofeoController@getTrofeos');
+Route::post('addTrofeo', 'TrofeoController@addTrofeo');
+Route::post('whereTrofeoCaballo', 'TrofeoController@whereTrofeoCaballo');
+
 //Resources
 Route::post('contacto', 'ResourcesController@contacto');

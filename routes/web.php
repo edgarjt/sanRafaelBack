@@ -59,10 +59,19 @@ Route::post('updateSlider', 'SliderController@updateSlider');
 Route::get('reportPdf', 'UsersController@reportPdf')->name('reportPdf');
 Route::get('reportYeguas', 'UsersController@reportYeguas')->name('reportYeguas');
 
-//Trofeos
-Route::get('getTrofeosCaballos', 'TrofeoController@getTrofeos');
-Route::post('addTrofeo', 'TrofeoController@addTrofeo');
+//Trofeos Caballos
+Route::get('getTrofeosCaballos', 'TrofeoController@getTrofeosCaballos');
+Route::post('addTrofeoCaballo', 'TrofeoController@addTrofeoCaballo');
 Route::post('whereTrofeoCaballo', 'TrofeoController@whereTrofeoCaballo');
+Route::post('updateTrofeoCaballos', 'TrofeoController@updateTrofeoCaballos');
+Route::post('deleteTrofeoCaballos', 'TrofeoController@deleteTrofeoCaballos');
+
+//Trofeos Yeguas
+Route::get('getTrofeosYeguas', 'TrofeoYeguaController@getTrofeosYeguas');
+Route::post('addTrofeoYegua', 'TrofeoYeguaController@addTrofeoYegua');
+Route::post('updateTrofeoYegua', 'TrofeoYeguaController@updateTrofeoYegua');
+Route::post('whereTrofeoYegua', 'TrofeoYeguaController@whereTrofeoYegua');
+Route::post('deleteTrofeoYegua', 'TrofeoYeguaController@deleteTrofeoYegua');
 
 //Resources
 Route::post('contacto', 'ResourcesController@contacto');

@@ -4,21 +4,24 @@ namespace App\Http\Controllers;
 
 use App\TrofeoYegua;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
 class TrofeoYeguaController extends Controller
 {
     public function getTrofeosYeguas(Request $request) {
-        if ($request->isJson()) {
-            $data = TrofeoYegua::all();
 
-            if (count($data) > 0) {
-                return $data;
-            }
+        $response = DB::table('trofeoYegua')
+            ->join('yegua', 'trofeoYegua.fk_id_yegua', 'yegua.yeg_id')
+            ->select('trofeoYegua.*', 'yegua.yeg_nombre')
+            ->get();
+
+        if (count($response) > 0) {
+            return $response;
         }
 
-        return response()->json(['response' => false], 401);
+        return response()->json(['response' => false], 204);
 
     }
 

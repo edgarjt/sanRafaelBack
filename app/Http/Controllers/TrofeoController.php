@@ -4,17 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Trofeo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
 class TrofeoController extends Controller
 {
     public function getTrofeosCaballos() {
-        $data = Trofeo::all();
+        $response = DB::table('trofeoCaballo')
+            ->join('caballo', 'trofeoCaballo.fk_id_caballo', 'caballo.cab_id')
+            ->select('trofeoCaballo.*', 'caballo.cab_nombre')
+            ->get();
 
-        if  (count($data) > 0) {
-            return $data;
+        if (count($response) > 0) {
+            return $response;
         }
+
         return response()->json(['response' => false], 204);
 
     }

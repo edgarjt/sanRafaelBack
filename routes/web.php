@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return response()->json(['title' => 'Yeguada San Rafael', 'status' => 'active']);
 });
 
 //login

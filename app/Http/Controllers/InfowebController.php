@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Storage;
 
 class InfowebController extends Controller
 {
+    const DIR_PATH = 'InfoWeb/';
+    const LOCAL_DISK = 'local';
+
     public function getInfos(Request $request)
     {
         if ($request->isJson()) {
@@ -31,18 +34,12 @@ class InfowebController extends Controller
         $logo = $request->file('inf_logo');
 
         $update = InfoWeb::where('inf_id', $request['inf_id'])->first();
+        $url_img = $update->inf_logo;
 
 
         if ($logo) {
-            $name = str_replace(' ', '_', time().$logo->getClientOriginalName());
-            Storage::disk('logo')->put($name,File::get($logo));
-            $url_img = 'http://'.$_SERVER['SERVER_NAME'].'/yeguadaSanRafaelBack/storage/app/public/logo/'.$name;
-
-            $foto = $update->inf_logo;
-            $name_foto = substr($foto, 73);
-            Storage::disk('logo')->delete($name_foto);
-        } else {
-            $url_img = $request['inf_logo'];
+            $url_img = self::DIR_PATH.$update->inf_id.'/infoWeb.png';
+            Storage::disk(self::LOCAL_DISK)->put($url_img,File::get($logo));
         }
 
         $data = [

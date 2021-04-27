@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Storage;
 
 class TrofeoController extends Controller
 {
+    const DIR_PATH = 'TrofeoCab/';
+    const LOCAL_DISK = 'local';
+
     public function getTrofeosCaballos() {
         $response = DB::table('trofeoCaballo')
             ->join('caballo', 'trofeoCaballo.fk_id_caballo', 'caballo.cab_id')
@@ -48,11 +51,11 @@ class TrofeoController extends Controller
         ]);
 
         $foto_trofeo = $request->file('trf_foto');
+        $url_img = null;
 
         if ($foto_trofeo) {
-            $name = str_replace(' ', '_', time().$foto_trofeo->getClientOriginalName());
-            Storage::disk('trofeo')->put($name,File::get($foto_trofeo));
-            $url_img = 'http://'.$_SERVER['SERVER_NAME'].'/yeguadaSanRafaelBack/storage/app/public/trofeo/'.$name;
+            $url_img = self::DIR_PATH.$request->fk_id_caballo.'/fotOne.png';
+            Storage::disk(self::LOCAL_DISK)->put($url_img,File::get($foto_trofeo));
         }
 
         $data = [

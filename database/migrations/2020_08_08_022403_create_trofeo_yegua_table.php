@@ -16,7 +16,7 @@ class CreateTrofeoYeguaTable extends Migration
         Schema::create('trofeoYegua', function (Blueprint $table) {
             $table->increments('trf_id');
             $table->string('trf_titulo');
-            $table->string('trf_foto');
+            $table->string('trf_foto')->nullable();
             $table->string('trf_fecha');
             $table->string('trf_descripcion');
             $table->integer('fk_id_yegua')->unsigned();

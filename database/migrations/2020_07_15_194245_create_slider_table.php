@@ -16,7 +16,7 @@ class CreateSliderTable extends Migration
         Schema::create('slider', function (Blueprint $table) {
             $table->increments('sli_id');
             $table->string('sli_nombre');
-            $table->string('sli_link');
+            $table->string('sli_link')->nullable();
             $table->integer('fk_id_user')->unsigned();
             $table->foreign('fk_id_user')->references('use_id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();

@@ -17,8 +17,9 @@ class CreateCaballoTable extends Migration
             $table->increments('cab_id');
             $table->string('cab_nombre');
             $table->string('cab_capa');
-            $table->string('cab_nacimiento');
+            $table->string('cab_nacimiento')->nullable();
             $table->string('cab_semental');
+            $table->string('cab_altura')->nullable();
             $table->string('cab_fot1')->nullable();
             $table->string('cab_fot2')->nullable();
             $table->string('cab_fot3')->nullable();

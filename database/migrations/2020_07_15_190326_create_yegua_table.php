@@ -17,8 +17,9 @@ class CreateYeguaTable extends Migration
             $table->increments('yeg_id');
             $table->string('yeg_nombre');
             $table->string('yeg_capa');
-            $table->string('yeg_nacimiento');
+            $table->string('yeg_nacimiento')->nullable();
             $table->string('yeg_semental');
+            $table->string('yeg_altura')->nullable();
             $table->string('yeg_fot1')->nullable();
             $table->string('yeg_fot2')->nullable();
             $table->string('yeg_fot3')->nullable();

@@ -15,7 +15,7 @@ class CreateInfoWebTable extends Migration
     {
         Schema::create('infoWeb', function (Blueprint $table) {
             $table->increments('inf_id');
-            $table->string('inf_logo');
+            $table->string('inf_logo')->nullable();
             $table->string('inf_telefono');
             $table->string('inf_email');
             $table->string('inf_historia', 1000);

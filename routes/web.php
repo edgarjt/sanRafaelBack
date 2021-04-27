@@ -75,3 +75,4 @@ Route::post('deleteTrofeoYegua', 'TrofeoYeguaController@deleteTrofeoYegua');
 
 //Resources
 Route::post('contacto', 'ResourcesController@contacto');
+Route::get('viewFile', 'CaballoController@viewFile');

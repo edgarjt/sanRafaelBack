@@ -6,9 +6,13 @@ use App\Yegua;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class YeguaController extends Controller
 {
+    const DIR_PATH = 'Yeguas/';
+    const LOCAL_DISK = 'local';
+
     public function getYeguas(Request $request) {
         if ($request->isJson()) {
             return Yegua::all();
@@ -40,50 +44,45 @@ class YeguaController extends Controller
     }
 
     public function addYegua(Request $request) {
-            $this->validate($request, [
-                'yeg_nombre' => 'required',
-                'yeg_capa' => 'required',
-                'yeg_nacimiento' => 'required',
-                'yeg_semental' => 'required',
-                'fk_id_user' => 'required',
-                'fk_id_finca' => 'required'
-            ]);
+
+        $validator = Validator::make($request->all(), [
+            'yeg_nombre' => 'required',
+            'yeg_capa' => 'required',
+            'yeg_semental' => 'required',
+            'fk_id_user' => 'required',
+            'fk_id_finca' => 'required'
+        ]);
+
+        if ($validator->fails())
+            return response()->json(['status' => false, 'message' => 'Datos invalidos'], 404);
 
         $fot1 =  $request->file('yeg_fot1');
         $fot2 =  $request->file('yeg_fot2');
         $fot3 =  $request->file('yeg_fot3');
         $yeg_video =  $request->file('yeg_video');
+        $path_one = null;
+        $path_two = null;
+        $path_tree = null;
+        $path_video = null;
 
         if ($fot1) {
-            $name1 = str_replace(' ', '_', time().$fot1->getClientOriginalName());
-            Storage::disk('fotos_yeguas')->put($name1,File::get($fot1));
-            $url_img1 = 'http://'.$_SERVER['SERVER_NAME'].'/yeguadaSanRafaelBack/storage/app/public/fotos_yeguas/'.$name1;
-        } else {
-            $url_img1 = $request['yeg_fot1'];
+            $path_one = self::DIR_PATH.$request->yeg_nombre.'/fotOne.png';
+            Storage::disk(self::LOCAL_DISK)->put($path_one, File::get($fot1));
         }
 
         if ($fot2) {
-            $name2 = str_replace(' ', '_', time().$fot2->getClientOriginalName());
-            Storage::disk('fotos_yeguas')->put($name2,File::get($fot2));
-            $url_img2 = 'http://'.$_SERVER['SERVER_NAME'].'/yeguadaSanRafaelBack/storage/app/public/fotos_yeguas/'.$name2;
-        } else {
-            $url_img2 = $request['yeg_fot2'];
+            $path_two = self::DIR_PATH.$request->yeg_nombre.'/fotTwo.png';
+            Storage::disk(self::LOCAL_DISK)->put($path_two, File::get($fot2));
         }
 
         if ($fot3) {
-            $name3 = str_replace(' ', '_', time().$fot3->getClientOriginalName());
-            Storage::disk('fotos_yeguas')->put($name3,File::get($fot3));
-            $url_img3 = 'http://'.$_SERVER['SERVER_NAME'].'/yeguadaSanRafaelBack/storage/app/public/fotos_yeguas/'.$name3;
-        } else {
-            $url_img3 = $request['yeg_fot3'];
+            $path_tree = self::DIR_PATH.$request->yeg_nombre.'/fotTree.png';
+            Storage::disk(self::LOCAL_DISK)->put($path_tree, File::get($fot3));
         }
 
         if ($yeg_video) {
-            $nameVideo = str_replace(' ', '_', time().$yeg_video->getClientOriginalName());
-            Storage::disk('video_yeguas')->put($nameVideo,File::get($yeg_video));
-            $url_video = 'http://'.$_SERVER['SERVER_NAME'].'/yeguadaSanRafaelBack/storage/app/public/video_yeguas/'.$nameVideo;
-        } else {
-            $url_video = $request['yeg_video'];
+            $path_video = self::DIR_PATH.$request->yeg_nombre.'/video.mp4';
+            Storage::disk(self::LOCAL_DISK)->put($path_video, File::get($yeg_video));
         }
 
             $add = Yegua::create([
@@ -91,83 +90,71 @@ class YeguaController extends Controller
                 'yeg_capa' => $request['yeg_capa'],
                 'yeg_nacimiento' => $request['yeg_nacimiento'],
                 'yeg_semental' => $request['yeg_semental'],
-                'yeg_fot1' => $url_img1,
-                'yeg_fot2' => $url_img2,
-                'yeg_fot3' => $url_img3,
-                'yeg_video' => $url_video,
+                'yeg_altura' => $request['yeg_altura'],
+                'yeg_fot1' => $path_one,
+                'yeg_fot2' => $path_two,
+                'yeg_fot3' => $path_tree,
+                'yeg_video' => $path_video,
                 'fk_id_user' => $request['fk_id_user'],
                 'fk_id_finca' => $request['fk_id_finca']
             ]);
 
+        if (!is_null($add)) {
             return $add;
+        }
+
+        return response()->json(['status' => false, 'message' => 'Ocurrio un error al insertar los datos'], 404);
 
     }
 
     public function updateYegua(Request $request) {
 
-            $this->validate($request, [
-                'yeg_id' => 'required',
-                'yeg_nombre' => 'required',
-                'yeg_capa' => 'required',
-                'yeg_nacimiento' => 'required',
-                'yeg_semental' => 'required',
-                'fk_id_user' => 'required',
-                'fk_id_finca' => 'required'
-            ]);
+        $validator = Validator::make($request->all(), [
+            'yeg_id' => 'required',
+            'yeg_nombre' => 'required',
+            'yeg_capa' => 'required',
+            'yeg_semental' => 'required',
+            'fk_id_user' => 'required',
+            'fk_id_finca' => 'required'
+        ]);
+
+        if ($validator->fails())
+            return response()->json(['status' => false, 'message' => 'Datos invalidos'], 404);
 
         $fot1 =  $request->file('yeg_fot1');
         $fot2 =  $request->file('yeg_fot2');
         $fot3 =  $request->file('yeg_fot3');
         $yeg_video =  $request->file('yeg_video');
+        $path_one = $request->yeg_fot1;
+        $path_two = $request->yeg_fot2;
+        $path_tree = $request->yeg_fot3;
+        $path_video = $request->yeg_video;
+
 
         $update = Yegua::where('yeg_id', $request['yeg_id'])->first();
 
-        if ($fot1) {
-            $name1 = str_replace(' ', '_', time().$fot1->getClientOriginalName());
-            Storage::disk('fotos_yeguas')->put($name1,File::get($fot1));
-            $url_img1 = 'http://'.$_SERVER['SERVER_NAME'].'/yeguadaSanRafaelBack/storage/app/public/fotos_yeguas/'.$name1;
+        if (is_null($update)){
+            return response()->json(['status' => false, 'message' => 'Datos no encontrado'], 404);
+        }
 
-            $foto1 = $update->yeg_fot1;
-            $name_foto1 = substr($foto1, 81);
-            Storage::disk('fotos_yeguas')->delete($name_foto1);
-        } else {
-            $url_img1 = $request['yeg_fot1'];
+        if ($fot1) {
+            $path_one = self::DIR_PATH.$request->yeg_nombre.'/fotOne.png';
+            Storage::disk(self::LOCAL_DISK)->put($path_one, File::get($fot1));
         }
 
         if ($fot2) {
-            $name2 = str_replace(' ', '_', time().$fot2->getClientOriginalName());
-            Storage::disk('fotos_yeguas')->put($name2,File::get($fot2));
-            $url_img2 = 'http://'.$_SERVER['SERVER_NAME'].'/yeguadaSanRafaelBack/storage/app/public/fotos_yeguas/'.$name2;
-
-            $foto2 = $update->yeg_fot2;
-            $name_foto2 = substr($foto2, 81);
-            Storage::disk('fotos_yeguas')->delete($name_foto2);
-        } else {
-            $url_img2 = $request['yeg_fot2'];
+            $path_two = self::DIR_PATH.$request->yeg_nombre.'/fotTwo.png';
+            Storage::disk(self::LOCAL_DISK)->put($path_two, File::get($fot2));
         }
 
         if ($fot3) {
-            $name3 = str_replace(' ', '_', time().$fot3->getClientOriginalName());
-            Storage::disk('fotos_yeguas')->put($name3,File::get($fot3));
-            $url_img3 = 'http://'.$_SERVER['SERVER_NAME'].'/yeguadaSanRafaelBack/storage/app/public/fotos_yeguas/'.$name3;
-
-            $foto3 = $update->yeg_fot3;
-            $name_foto3 = substr($foto3, 81);
-            Storage::disk('fotos_yeguas')->delete($name_foto3);
-        } else {
-            $url_img3 = $request['yeg_fot3'];
+            $path_tree = self::DIR_PATH.$request->yeg_nombre.'/fotTree.png';
+            Storage::disk(self::LOCAL_DISK)->put($path_tree, File::get($fot3));
         }
 
         if ($yeg_video) {
-            $nameVideo = str_replace(' ', '_', time().$yeg_video->getClientOriginalName());
-            Storage::disk('video_yeguas')->put($nameVideo,File::get($yeg_video));
-            $url_video = 'http://'.$_SERVER['SERVER_NAME'].'/yeguadaSanRafaelBack/storage/app/public/video_yeguas/'.$nameVideo;
-
-            $video = $update->yeg_video;
-            $name_video = substr($video, 81);
-            Storage::disk('video_yeguas')->delete($name_video);
-        } else {
-            $url_video = $request['yeg_video'];
+            $path_video = self::DIR_PATH.$request->yeg_nombre.'/video.mp4';
+            Storage::disk(self::LOCAL_DISK)->put($path_video, File::get($yeg_video));
         }
 
         $data = [
@@ -175,12 +162,13 @@ class YeguaController extends Controller
             'yeg_capa' => $request['yeg_capa'],
             'yeg_nacimiento' => $request['yeg_nacimiento'],
             'yeg_semental' => $request['yeg_semental'],
-            'yeg_fot1' => $url_img1,
-            'yeg_fot2' => $url_img2,
-            'yeg_fot3' => $url_img3,
-            'yeg_video' => $url_video,
+            'yeg_altura' => $request['yeg_altura'],
+            'yeg_fot1' => $path_one,
+            'yeg_fot2' => $path_two,
+            'yeg_fot3' => $path_tree,
+            'yeg_video' => $path_video,
             'fk_id_user' => $request['fk_id_user'],
-            'fk_id_finca' => $request['fk_id_finca'],
+            'fk_id_finca' => $request['fk_id_finca']
         ];
 
         $update->update($data);

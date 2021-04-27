@@ -55,55 +55,6 @@ return [
             'visibility' => 'public',
         ],
 
-        'fotos_caballos' => [
-            'driver' => 'local',
-            'root' => storage_path('app/public/fotos_caballos'),
-            'url' => env('APP_URL').'/storage',
-            'visibility' => 'public',
-        ],
-
-        'fotos_yeguas' => [
-            'driver' => 'local',
-            'root' => storage_path('app/public/fotos_yeguas'),
-            'url' => env('APP_URL').'/storage',
-            'visibility' => 'public',
-        ],
-
-        'video_caballos' => [
-            'driver' => 'local',
-            'root' => storage_path('app/public/video_caballos'),
-            'url' => env('APP_URL').'/storage',
-            'visibility' => 'public',
-        ],
-
-        'video_yeguas' => [
-            'driver' => 'local',
-            'root' => storage_path('app/public/video_yeguas'),
-            'url' => env('APP_URL').'/storage',
-            'visibility' => 'public',
-        ],
-
-        'logo' => [
-            'driver' => 'local',
-            'root' => storage_path('app/public/logo'),
-            'url' => env('APP_URL').'/storage',
-            'visibility' => 'public',
-        ],
-
-        'slid' => [
-            'driver' => 'local',
-            'root' => storage_path('app/public/slid'),
-            'url' => env('APP_URL').'/storage',
-            'visibility' => 'public',
-        ],
-
-        'trofeo' => [
-            'driver' => 'local',
-            'root' => storage_path('app/public/trofeo'),
-            'url' => env('APP_URL').'/storage',
-            'visibility' => 'public',
-        ],
-
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

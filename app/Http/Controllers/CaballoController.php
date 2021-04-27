@@ -6,9 +6,14 @@ use App\Caballo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Response;
 
 class CaballoController extends Controller
 {
+    const DIR_PATH = 'Caballos/';
+    const LOCAL_DISK = 'local';
+
     public function getCaballos(Request $request) {
         if ($request->isJson()) {
             return Caballo::all();
@@ -41,61 +46,56 @@ class CaballoController extends Controller
 
     public function addCaballo(Request $request) {
 
-            $this->validate($request, [
-                'cab_nombre' => 'required',
-                'cab_capa' => 'required',
-                'cab_nacimiento' => 'required',
-                'cab_semental' => 'required',
-                'fk_id_user' => 'required',
-                'fk_id_finca' => 'required'
-            ]);
+        $validator = Validator::make($request->all(), [
+            'cab_nombre' => 'required',
+            'cab_capa' => 'required',
+            'cab_semental' => 'required',
+            'fk_id_user' => 'required',
+            'fk_id_finca' => 'required'
+        ]);
+
+        if ($validator->fails())
+            return response()->json(['status' => false, 'message' => 'Datos invalidos'], 404);
 
             $fot1 =  $request->file('cab_fot1');
             $fot2 =  $request->file('cab_fot2');
             $fot3 =  $request->file('cab_fot3');
             $cab_video =  $request->file('cab_video');
+            $path_one = null;
+            $path_two = null;
+            $path_tree = null;
+            $path_video = null;
 
             if ($fot1) {
-                $name1 = str_replace(' ', '_', time().$fot1->getClientOriginalName());
-                Storage::disk('fotos_caballos')->put($name1,File::get($fot1));
-                $url_img1 = 'http://'.$_SERVER['SERVER_NAME'].'/yeguadaSanRafaelBack/storage/app/public/fotos_caballos/'.$name1;
-            } else {
-                $url_img1 = $request['cab_fot1'];
+                $path_one = self::DIR_PATH.$request->cab_nombre.'/fotOne.png';
+                Storage::disk(self::LOCAL_DISK)->put($path_one, File::get($fot1));
             }
 
             if ($fot2) {
-                $name2 = str_replace(' ', '_', time().$fot2->getClientOriginalName());
-                Storage::disk('fotos_caballos')->put($name2,File::get($fot2));
-                $url_img2 = 'http://'.$_SERVER['SERVER_NAME'].'/yeguadaSanRafaelBack/storage/app/public/fotos_caballos/'.$name2;
-            } else {
-                $url_img2 = $request['cab_fot2'];
+                $path_two = self::DIR_PATH.$request->cab_nombre.'/fotTwo.png';
+                Storage::disk(self::LOCAL_DISK)->put($path_two, File::get($fot2));
             }
 
             if ($fot3) {
-                $name3 = str_replace(' ', '_', time().$fot3->getClientOriginalName());
-                Storage::disk('fotos_caballos')->put($name3,File::get($fot3));
-                $url_img3 = 'http://'.$_SERVER['SERVER_NAME'].'/yeguadaSanRafaelBack/storage/app/public/fotos_caballos/'.$name3;
-            } else {
-                $url_img3 = $request['cab_fot3'];
+                $path_tree = self::DIR_PATH.$request->cab_nombre.'/fotTree.png';
+                Storage::disk(self::LOCAL_DISK)->put($path_tree, File::get($fot3));
             }
 
-        if ($cab_video) {
-            $nameVideo = str_replace(' ', '_', time().$cab_video->getClientOriginalName());
-            Storage::disk('video_caballos')->put($nameVideo,File::get($cab_video));
-            $url_video = 'http://'.$_SERVER['SERVER_NAME'].'/yeguadaSanRafaelBack/storage/app/public/video_caballos/'.$nameVideo;
-        } else {
-            $url_video = $request['cab_video'];
-        }
+            if ($cab_video) {
+                $path_video = self::DIR_PATH.$request->cab_nombre.'/video.mp4';
+                Storage::disk(self::LOCAL_DISK)->put($path_video, File::get($cab_video));
+            }
 
             $response = Caballo::create([
                 'cab_nombre' => $request['cab_nombre'],
                 'cab_capa' => $request['cab_capa'],
                 'cab_nacimiento' => $request['cab_nacimiento'],
                 'cab_semental' => $request['cab_semental'],
-                'cab_fot1' => $url_img1,
-                'cab_fot2' => $url_img2,
-                'cab_fot3' => $url_img3,
-                'cab_video' => $url_video,
+                'cab_altura' => $request['cab_altura'],
+                'cab_fot1' => $path_one,
+                'cab_fot2' => $path_two,
+                'cab_fot3' => $path_tree,
+                'cab_video' => $path_video,
                 'fk_id_user' => $request['fk_id_user'],
                 'fk_id_finca' => $request['fk_id_finca']
             ]);
@@ -105,15 +105,18 @@ class CaballoController extends Controller
 
     public function updateCaballo(Request $request)
     {
-        $this->validate($request, [
+
+        $validator = Validator::make($request->all(), [
             'cab_id' => 'required',
             'cab_nombre' => 'required',
             'cab_capa' => 'required',
-            'cab_nacimiento' => 'required',
             'cab_semental' => 'required',
             'fk_id_user' => 'required',
             'fk_id_finca' => 'required'
         ]);
+
+        if ($validator->fails())
+            return response()->json(['status' => false, 'message' => 'Datos invalidos'], 404);
 
         $fot1 =  $request->file('cab_fot1');
         $fot2 =  $request->file('cab_fot2');
@@ -122,52 +125,29 @@ class CaballoController extends Controller
 
         $update = Caballo::where('cab_id', $request['cab_id'])->first();
 
-        if ($fot1) {
-            $name1 = str_replace(' ', '_', time().$fot1->getClientOriginalName());
-            Storage::disk('fotos_caballos')->put($name1,File::get($fot1));
-            $url_img1 = 'http://'.$_SERVER['SERVER_NAME'].'/yeguadaSanRafaelBack/storage/app/public/fotos_caballos/'.$name1;
+        $path_one = $request->cab_fot1;
+        $path_two = $request->cab_fot2;
+        $path_tree = $request->cab_fot3;
+        $path_video = $request->cab_video;
 
-            $foto1 = $update->cab_fot1;
-            $name_foto1 = substr($foto1, 83);
-            Storage::disk('fotos_caballos')->delete($name_foto1);
-        } else {
-            $url_img1 = $request['cab_fot1'];
+        if ($fot1) {
+            $path_one = self::DIR_PATH.$request->cab_nombre.'/fotOne.png';
+            Storage::disk(self::LOCAL_DISK)->put($path_one, File::get($fot1));
         }
 
         if ($fot2) {
-            $name2 = str_replace(' ', '_', time().$fot2->getClientOriginalName());
-            Storage::disk('fotos_caballos')->put($name2,File::get($fot2));
-            $url_img2 = 'http://'.$_SERVER['SERVER_NAME'].'/yeguadaSanRafaelBack/storage/app/public/fotos_caballos/'.$name2;
-
-            $foto2 = $update->cab_fot2;
-            $name_foto2 = substr($foto2, 83);
-            Storage::disk('fotos_caballos')->delete($name_foto2);
-        } else {
-            $url_img2 = $request['cab_fot2'];
+            $path_two = self::DIR_PATH.$request->cab_nombre.'/fotTwo.png';
+            Storage::disk(self::LOCAL_DISK)->put($path_two, File::get($fot2));
         }
 
         if ($fot3) {
-            $name3 = str_replace(' ', '_', time().$fot3->getClientOriginalName());
-            Storage::disk('fotos_caballos')->put($name3,File::get($fot3));
-            $url_img3 = 'http://'.$_SERVER['SERVER_NAME'].'/yeguadaSanRafaelBack/storage/app/public/fotos_caballos/'.$name3;
-
-            $foto3 = $update->cab_fot3;
-            $name_foto3 = substr($foto3, 83);
-            Storage::disk('fotos_caballos')->delete($name_foto3);
-        } else {
-            $url_img3 = $request['cab_fot3'];
+            $path_tree = self::DIR_PATH.$request->cab_nombre.'/fotTree.png';
+            Storage::disk(self::LOCAL_DISK)->put($path_tree, File::get($fot3));
         }
 
         if ($cab_video) {
-            $nameVideo = str_replace(' ', '_', time().$cab_video->getClientOriginalName());
-            Storage::disk('video_caballos')->put($nameVideo,File::get($cab_video));
-            $url_video = 'http://'.$_SERVER['SERVER_NAME'].'/yeguadaSanRafaelBack/storage/app/public/video_caballos/'.$nameVideo;
-
-            $video = $update->cab_video;
-            $name_video = substr($video, 83);
-            Storage::disk('video_caballos')->delete($name_video);
-        } else {
-            $url_video = $request['cab_video'];
+            $path_video = self::DIR_PATH.$request->cab_nombre.'/video.mp4';
+            Storage::disk(self::LOCAL_DISK)->put($path_video, File::get($cab_video));
         }
 
         $data = [
@@ -175,17 +155,18 @@ class CaballoController extends Controller
             'cab_capa' => $request['cab_capa'],
             'cab_nacimiento' => $request['cab_nacimiento'],
             'cab_semental' => $request['cab_semental'],
-            'cab_fot1' => $url_img1,
-            'cab_fot2' => $url_img2,
-            'cab_fot3' => $url_img3,
-            'cab_video' => $url_video,
+            'cab_altura' => $request['cab_altura'],
+            'cab_fot1' => $path_one,
+            'cab_fot2' => $path_two,
+            'cab_fot3' => $path_tree,
+            'cab_video' => $path_video,
             'fk_id_user' => $request['fk_id_user'],
-            'fk_id_finca' => $request['fk_id_finca'],
+            'fk_id_finca' => $request['fk_id_finca']
         ];
 
         $update->update($data);
 
-       if ($update) {
+       if (!is_null($update)) {
             return $update;
         }
 
@@ -224,5 +205,24 @@ class CaballoController extends Controller
         }
 
         return response()->json(['response' => false], 401);
+    }
+
+    public function viewFile(Request $request) {
+
+        if (Storage::disk(self::LOCAL_DISK)->exists($request->nameFile)) {
+            $rest = substr($request->nameFile, -3);
+            $file = Storage::disk(self::LOCAL_DISK)->get($request->nameFile);
+
+            if ($rest == 'mp4')
+                return response($file)->header('Content-Type', 'video/mp4');
+
+            return $file;
+
+
+        }
+
+        return response()->json(['status' => false, 'message' => 'Recurso no encontrado'], 404);
+
+
     }
 }

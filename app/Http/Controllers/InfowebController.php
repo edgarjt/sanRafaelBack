@@ -28,6 +28,11 @@ class InfowebController extends Controller
                 'inf_telefono' => 'required',
                 'inf_email' => 'required',
                 'inf_historia' => 'required',
+                'inf_dir' => 'required',
+                'inf_hora' => 'required',
+                'inf_facebook' => 'required',
+                'inf_instagram' => 'required',
+                'inf_twitter' => 'required',
                 'fk_id_user' => 'required'
             ]);
 
@@ -47,6 +52,11 @@ class InfowebController extends Controller
             'inf_telefono' => $request['inf_telefono'],
             'inf_email' => $request['inf_email'],
             'inf_historia' => $request['inf_historia'],
+            'inf_dir' => $request['inf_dir'],
+            'inf_hora' => $request['inf_hora'],
+            'inf_facebook' => $request['inf_facebook'],
+            'inf_instagram' => $request['inf_instagram'],
+            'inf_twitter' => $request['inf_twitter'],
             'fk_id_user' => $request['inf_id'],
         ];
 

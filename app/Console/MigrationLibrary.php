@@ -76,6 +76,45 @@ class MigrationLibrary extends Migration
             }
         }
 
+        if (Schema::hasTable('infoWeb')){
+            if (!Schema::hasColumn('infoWeb', 'inf_dir')){
+                Schema::table('infoWeb', function (Blueprint $table){
+                    $table->string('inf_dir')->nullable()->after('inf_historia');
+                });
+            }
+        }
+        if (Schema::hasTable('infoWeb')){
+            if (!Schema::hasColumn('infoWeb', 'inf_hora')){
+                Schema::table('infoWeb', function (Blueprint $table){
+                    $table->string('inf_hora')->nullable()->after('inf_dir');
+                });
+            }
+        }
+
+        if (Schema::hasTable('infoWeb')){
+            if (!Schema::hasColumn('infoWeb', 'inf_facebook')){
+                Schema::table('infoWeb', function (Blueprint $table){
+                    $table->string('inf_facebook')->nullable()->after('inf_hora');
+                });
+            }
+        }
+
+        if (Schema::hasTable('infoWeb')){
+            if (!Schema::hasColumn('infoWeb', 'inf_instagram')){
+                Schema::table('infoWeb', function (Blueprint $table){
+                    $table->string('inf_instagram')->nullable()->after('inf_facebook');
+                });
+            }
+        }
+
+        if (Schema::hasTable('infoWeb')){
+            if (!Schema::hasColumn('infoWeb', 'inf_twitter')){
+                Schema::table('infoWeb', function (Blueprint $table){
+                    $table->string('inf_twitter')->nullable()->after('inf_instagram');
+                });
+            }
+        }
+
         printf("\e[32mSuccess migrate columns \033[0m \n");
     }
 }

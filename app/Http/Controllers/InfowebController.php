@@ -30,9 +30,6 @@ class InfowebController extends Controller
                 'inf_historia' => 'required',
                 'inf_dir' => 'required',
                 'inf_hora' => 'required',
-                'inf_facebook' => 'required',
-                'inf_instagram' => 'required',
-                'inf_twitter' => 'required',
                 'fk_id_user' => 'required'
             ]);
 
